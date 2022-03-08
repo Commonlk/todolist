@@ -19,6 +19,8 @@ model User {
   name  String
   hash  String
 
+  Todos Todo[]
+
   @@map("users")
 }
 
@@ -31,6 +33,9 @@ model Todo {
   description String?
   important   Boolean @default(false)
   completed   Boolean @default(false)
+
+  userId Int?
+  User   User? @relation(fields: [userId], references: [id])
 
   @@map("todos")
 }
