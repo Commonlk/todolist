@@ -1,8 +1,8 @@
 {
   "name": "todolist",
   "version": "0.0.1",
-  "description": "",
-  "author": "",
+  "description": "A todo API that handles user authentication with jwt",
+  "author": "Victor Azevedo",
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
