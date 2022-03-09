@@ -25,12 +25,20 @@ export class TodosService {
     }
   }
 
-  findAll(userId: number) {
-    return this.prisma.todo.findMany({ where: { userId } });
+  async findAll(userId: number) {
+    const user = await this.prisma.user.findUnique({ where: { id: userId } });
+
+    if (!user) throw new NotFoundException('User not found');
+
+    return await this.prisma.todo.findMany({ where: { userId } });
   }
 
-  findOne(id: number) {
-    return this.prisma.todo.findUnique({ where: { id } });
+  async findOne(todoId: number) {
+    const todo = await this.prisma.todo.findUnique({ where: { id: todoId } });
+
+    if (!todo) throw new NotFoundException('Todo not found');
+
+    return todo;
   }
 
   async update(todoId: number, userId: number, updateTodoDto: UpdateTodoDto) {
@@ -46,7 +54,9 @@ export class TodosService {
   }
 
   async remove(todoId: number, userId: number) {
-    const todo = await this.prisma.todo.findUnique({ where: { id: userId } });
+    const todo = await this.prisma.todo.findUnique({
+      where: { id: todoId },
+    });
 
     if (!todo || todo.userId !== userId)
       throw new ForbiddenException('Access to resource denied');
