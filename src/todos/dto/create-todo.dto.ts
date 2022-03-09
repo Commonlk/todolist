@@ -5,9 +5,10 @@ export class CreateTodoDto {
   @IsString()
   title: string;
 
+  @IsOptional()
   @IsNotEmpty()
   @IsString()
-  description: string;
+  description?: string;
 
   @IsOptional()
   @IsBoolean()
