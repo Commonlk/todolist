@@ -29,9 +29,11 @@ const TodoCard = ({ createdAt, description, important, title }: Props) => {
     <Card onClick={handleExpandClick}>
       <CardHeader
         action={
-          <IconButton aria-label="check">
-            <CheckRounded />
-          </IconButton>
+          !expanded && (
+            <IconButton aria-label="check">
+              <CheckRounded />
+            </IconButton>
+          )
         }
         title={title}
         titleTypographyProps={{ fontSize: 16 }}
@@ -45,13 +47,16 @@ const TodoCard = ({ createdAt, description, important, title }: Props) => {
           </Typography>
         </CardContent>
         <CardActions>
-          <IconButton aria-label="delete">
-            <DeleteRounded />
+          <IconButton aria-label="check">
+            <CheckRounded />
           </IconButton>
           <IconButton aria-label="edit">
             <Link to="/edit">
               <EditRounded />
             </Link>
+          </IconButton>
+          <IconButton aria-label="delete">
+            <DeleteRounded />
           </IconButton>
         </CardActions>
       </Collapse>
