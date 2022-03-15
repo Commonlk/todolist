@@ -36,7 +36,9 @@ const Header = () => {
             </Grid>
             <Grid item>
               <IconButton aria-label="user">
-                <PersonRounded />
+                <Link to="/user">
+                  <PersonRounded />
+                </Link>
               </IconButton>
             </Grid>
           </Stack>
