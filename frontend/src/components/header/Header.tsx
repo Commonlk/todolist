@@ -22,7 +22,7 @@ const Header = () => {
           <Stack direction="row" spacing={1}>
             <Grid item>
               <IconButton aria-label="home">
-                <Link to="/">
+                <Link to="/todos">
                   <HomeRounded />
                 </Link>
               </IconButton>
