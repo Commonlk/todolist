@@ -22,21 +22,21 @@ const Header = () => {
           <Stack direction="row" spacing={1}>
             <Grid item>
               <IconButton aria-label="home">
-                <Link to="/todos">
+                <Link style={{ color: "inherit" }} to="/todos">
                   <HomeRounded />
                 </Link>
               </IconButton>
             </Grid>
             <Grid item>
               <IconButton aria-label="add-card">
-                <Link to="/create">
+                <Link style={{ color: "inherit" }} to="/create">
                   <AddRounded />
                 </Link>
               </IconButton>
             </Grid>
             <Grid item>
               <IconButton aria-label="user">
-                <Link to="/user">
+                <Link style={{ color: "inherit" }} to="/user">
                   <PersonRounded />
                 </Link>
               </IconButton>
