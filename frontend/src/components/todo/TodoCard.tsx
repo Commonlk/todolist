@@ -1,5 +1,11 @@
 import React, { useState } from "react";
-import { CheckRounded, DeleteRounded, EditRounded } from "@mui/icons-material";
+import {
+  CheckRounded,
+  DeleteRounded,
+  DoDisturbAltRounded,
+  EditRounded,
+  PriorityHighRounded,
+} from "@mui/icons-material";
 import {
   Card,
   CardActions,
@@ -10,54 +16,116 @@ import {
   Typography,
 } from "@mui/material";
 import { Link } from "react-router-dom";
+import agent from "../../api/agent";
+import { Todo } from "../../models/todo";
+import { Box } from "@mui/system";
 
 interface Props {
+  id: string;
   title: string;
-  createdAt: string;
+  createdAt: Date;
   description: string;
   important?: boolean;
+  completed: boolean;
+  deleteTodo: (id: string) => void;
+  updateTodo: (id: string, todo: Todo) => void;
 }
 
-const TodoCard = ({ createdAt, description, important, title }: Props) => {
+const TodoCard = ({
+  createdAt,
+  description,
+  important,
+  title,
+  id,
+  completed,
+  deleteTodo,
+  updateTodo,
+}: Props) => {
   const [expanded, setExpanded] = useState(false);
+  const [isCompleted, setIsCompleted] = useState(completed);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
 
+  const handleDelete = async () => {
+    try {
+      await agent.Todos.delete(id);
+      deleteTodo(id);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleComplete = async () => {
+    const updatedTodo = await agent.Todos.edit(id, { completed: isCompleted });
+    setIsCompleted(!isCompleted);
+    updateTodo(id, updatedTodo);
+  };
+
   return (
-    <Card onClick={handleExpandClick}>
+    <Card
+      onClick={handleExpandClick}
+      sx={{ position: "relative", bgcolor: isCompleted ? "#7AE837" : "FFF" }}
+    >
+      {important && !expanded && !isCompleted && (
+        <PriorityHighRounded
+          sx={{
+            position: "absolute",
+            right: "20%",
+            top: "50%",
+            transform: "translateY(-50%)",
+            fontSize: 38,
+            opacity: "30%",
+            color: "red",
+          }}
+        />
+      )}
+
       <CardHeader
         action={
           !expanded && (
-            <IconButton aria-label="check">
-              <CheckRounded />
+            <IconButton aria-label="check" onClick={handleComplete}>
+              {isCompleted ? <DoDisturbAltRounded /> : <CheckRounded />}
             </IconButton>
           )
         }
         title={title}
         titleTypographyProps={{ fontSize: 16 }}
-        subheader={createdAt}
+        subheader={new Date(createdAt).toLocaleDateString()}
         subheaderTypographyProps={{ fontSize: 12 }}
       />
+
       <Collapse in={expanded} timeout="auto" unmountOnExit>
-        <CardContent>
-          <Typography paragraph sx={{ fontSize: 16 }}>
-            {description}
-          </Typography>
-        </CardContent>
+        {description && (
+          <CardContent>
+            <Typography paragraph sx={{ fontSize: 16 }}>
+              {description}
+            </Typography>
+          </CardContent>
+        )}
         <CardActions>
-          <IconButton aria-label="check">
-            <CheckRounded />
-          </IconButton>
-          <IconButton aria-label="edit">
-            <Link to="/edit">
-              <EditRounded />
-            </Link>
-          </IconButton>
-          <IconButton aria-label="delete">
-            <DeleteRounded />
-          </IconButton>
+          <Box
+            sx={{
+              display: "flex",
+              gap: 1,
+            }}
+          >
+            <IconButton aria-label="check" onClick={handleComplete}>
+              {isCompleted ? <DoDisturbAltRounded /> : <CheckRounded />}
+            </IconButton>
+            <IconButton aria-label="edit">
+              <Link
+                style={{ color: "inherit", fontSize: 0 }}
+                to={`/edit/${id}`}
+              >
+                <EditRounded />
+              </Link>
+            </IconButton>
+            <IconButton aria-label="delete" onClick={handleDelete}>
+              <DeleteRounded />
+            </IconButton>
+          </Box>
         </CardActions>
       </Collapse>
     </Card>
