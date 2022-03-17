@@ -18,34 +18,34 @@ export class TodosController {
   constructor(private readonly todosService: TodosService) {}
   @UseGuards(JwtGuard)
   @Post()
-  create(@GetUser('id') userId: number, @Body() createTodoDto: CreateTodoDto) {
+  create(@GetUser('id') userId: string, @Body() createTodoDto: CreateTodoDto) {
     return this.todosService.create(userId, createTodoDto);
   }
 
   @UseGuards(JwtGuard)
   @Get()
-  findAll(@GetUser('id') userId: number) {
+  findAll(@GetUser('id') userId: string) {
     return this.todosService.findAll(userId);
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.todosService.findOne(+id);
+    return this.todosService.findOne(id);
   }
 
   @UseGuards(JwtGuard)
   @Patch(':id')
   update(
     @Param('id') todoId: string,
-    @GetUser('id') userId: number,
+    @GetUser('id') userId: string,
     @Body() updateTodoDto: UpdateTodoDto,
   ) {
-    return this.todosService.update(+todoId, userId, updateTodoDto);
+    return this.todosService.update(todoId, userId, updateTodoDto);
   }
 
   @UseGuards(JwtGuard)
   @Delete(':id')
-  remove(@Param('id') todoId: string, @GetUser('id') userId: number) {
-    return this.todosService.remove(+todoId, userId);
+  remove(@Param('id') todoId: string, @GetUser('id') userId: string) {
+    return this.todosService.remove(todoId, userId);
   }
 }

@@ -58,7 +58,9 @@ const TodoCard = ({
   };
 
   const handleComplete = async () => {
-    const updatedTodo = await agent.Todos.edit(id, { completed: isCompleted });
+    const updatedTodo = await agent.Todos.edit(id, {
+      completed: isCompleted ? false : true,
+    });
     setIsCompleted(!isCompleted);
     updateTodo(id, updatedTodo);
   };

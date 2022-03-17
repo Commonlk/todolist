@@ -62,7 +62,6 @@ const EditTodo = ({ todos, updateTodo }: Props) => {
           important,
           description,
         });
-        console.log(updatedTodo);
 
         updateTodo(id, updatedTodo);
         navigate("/todos");

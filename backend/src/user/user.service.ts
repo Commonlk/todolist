@@ -6,7 +6,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 export class UserService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async update(id: number, updateUserDto: UpdateUserDto) {
+  async update(id: string, updateUserDto: UpdateUserDto) {
     const user = await this.prisma.user.update({
       where: {
         id,
@@ -20,7 +20,7 @@ export class UserService {
     return user;
   }
 
-  async delete(id: number) {
+  async delete(id: string) {
     const user = await this.prisma.user.findUnique({ where: { id } });
 
     if (!user) throw new NotFoundException('User not found');

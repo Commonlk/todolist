@@ -15,7 +15,7 @@ export class UserController {
   }
 
   @Post()
-  update(@GetUser('id') id: number, @Body() updateUserDto: UpdateUserDto) {
+  update(@GetUser('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.userService.update(id, updateUserDto);
   }
 }

@@ -44,7 +44,7 @@ describe('TodosService integration', () => {
 
     it('should throw exception if wrong userid', async () => {
       await todosService
-        .create(-1, dto)
+        .create('wrongId', dto)
         .then((todo) => expect(todo).toBeUndefined())
         .catch((error) => expect(error.status).toBe(404));
     });
@@ -67,7 +67,7 @@ describe('TodosService integration', () => {
 
     it('should throw exception if non authorized user', async () => {
       await todosService
-        .update(todo.id, -1, dto)
+        .update(todo.id, 'wrongId', dto)
         .then((todo) => expect(todo).toBeUndefined())
         .catch((error) => expect(error.status).toBe(403));
     });
@@ -82,7 +82,7 @@ describe('TodosService integration', () => {
 
     it('should throw exception if wrong userid', async () => {
       await todosService
-        .findAll(999)
+        .findAll('wrongId')
         .then((todos) => expect(todos).toBeUndefined())
         .catch((error) => expect(error.status).toBe(404));
     });
@@ -97,7 +97,7 @@ describe('TodosService integration', () => {
 
     it('should throw exception if wrong todoid', async () => {
       await todosService
-        .findOne(-1)
+        .findOne('wrongId')
         .then((todo) => expect(todo).toBeUndefined())
         .catch((error) => expect(error.status).toBe(404));
     });
@@ -114,7 +114,7 @@ describe('TodosService integration', () => {
 
     it('should throw exception if wrong todoid', async () => {
       await todosService
-        .findOne(-1)
+        .findOne('wrongId')
         .then((todo) => expect(todo).toBeUndefined())
         .catch((error) => expect(error.status).toBe(404));
     });
@@ -129,7 +129,7 @@ describe('TodosService integration', () => {
       todo = await todosService.create(user.id, dto);
 
       await todosService
-        .remove(todo.id, -1)
+        .remove(todo.id, 'wrongId')
         .then((todo) => expect(todo).toBeNull())
         .catch((error) => expect(error.status).toBe(403));
     });

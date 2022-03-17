@@ -10,7 +10,7 @@ import { CreateTodoDto, UpdateTodoDto } from './dto';
 export class TodosService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async create(userId: number, createTodoDto: CreateTodoDto) {
+  async create(userId: string, createTodoDto: CreateTodoDto) {
     const user = await this.prisma.user.findUnique({ where: { id: userId } });
 
     if (!user) throw new NotFoundException('User not found');
@@ -25,7 +25,7 @@ export class TodosService {
     }
   }
 
-  async findAll(userId: number) {
+  async findAll(userId: string) {
     const user = await this.prisma.user.findUnique({ where: { id: userId } });
 
     if (!user) throw new NotFoundException('User not found');
@@ -33,7 +33,7 @@ export class TodosService {
     return await this.prisma.todo.findMany({ where: { userId } });
   }
 
-  async findOne(todoId: number) {
+  async findOne(todoId: string) {
     const todo = await this.prisma.todo.findUnique({ where: { id: todoId } });
 
     if (!todo) throw new NotFoundException('Todo not found');
@@ -41,7 +41,7 @@ export class TodosService {
     return todo;
   }
 
-  async update(todoId: number, userId: number, updateTodoDto: UpdateTodoDto) {
+  async update(todoId: string, userId: string, updateTodoDto: UpdateTodoDto) {
     const todo = await this.prisma.todo.findUnique({ where: { id: todoId } });
 
     if (!todo || todo.userId !== userId)
@@ -53,7 +53,7 @@ export class TodosService {
     });
   }
 
-  async remove(todoId: number, userId: number) {
+  async remove(todoId: string, userId: string) {
     const todo = await this.prisma.todo.findUnique({
       where: { id: todoId },
     });

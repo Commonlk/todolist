@@ -35,12 +35,13 @@ function App() {
   const updateTodo = (id: string, updatedTodo: Todo) => {
     const updatedTodos = todos.map(todo => {
       if (todo.id === id) {
-        console.log({ todo });
         todo = { ...todo, ...updatedTodo };
-        console.log({ todo });
+        console.log(todo);
       }
       return todo;
     });
+    console.log(updatedTodos);
+
     setTodos([...updatedTodos]);
   };
 

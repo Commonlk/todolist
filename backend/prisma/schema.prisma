@@ -1,5 +1,5 @@
 // This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
+// learn more about it in the docs: https://pris.ly/d/prisma-
 
 generator client {
   provider = "prisma-client-js"
@@ -11,7 +11,7 @@ datasource db {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
+  id        String   @id @default(uuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -25,7 +25,7 @@ model User {
 }
 
 model Todo {
-  id        Int      @id @default(autoincrement())
+  id        String   @id @default(uuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -34,8 +34,8 @@ model Todo {
   important   Boolean @default(false)
   completed   Boolean @default(false)
 
-  userId Int?
-  User   User? @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String?
+  User   User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("todos")
 }
