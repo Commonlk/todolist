@@ -14,13 +14,16 @@ function App() {
   const [todos, setTodos] = useState<Todo[]>([]);
 
   useEffect(() => {
-    const getTodos = async () => {
-      const todos = await agent.Todos.todoList();
+    try {
+      const getTodos = async () => {
+        const todos = await agent.Todos.todoList();
+        if (todos) setTodos(todos);
+      };
 
-      setTodos(todos);
-    };
-
-    getTodos();
+      getTodos();
+    } catch (error) {
+      console.log(error);
+    }
   }, []);
 
   const handleTodo = (todo: Todo) => {
@@ -36,11 +39,9 @@ function App() {
     const updatedTodos = todos.map(todo => {
       if (todo.id === id) {
         todo = { ...todo, ...updatedTodo };
-        console.log(todo);
       }
       return todo;
     });
-    console.log(updatedTodos);
 
     setTodos([...updatedTodos]);
   };

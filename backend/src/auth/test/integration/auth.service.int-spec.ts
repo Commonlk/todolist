@@ -43,7 +43,7 @@ describe('AuthService integration', () => {
 
     it('should signup the user', async () => {
       const token = await authService.signup(dto);
-      const payload = jwt.decode(token.access_token, { json: true });
+      const payload = jwt.decode(token.token, { json: true });
       const data: IPayload = JSON.parse(JSON.stringify(payload));
 
       expect(token).toBeDefined();
@@ -65,7 +65,7 @@ describe('AuthService integration', () => {
     };
     it('should signin the user', async () => {
       const token = await authService.signin(dto);
-      const payload = jwt.decode(token.access_token, { json: true });
+      const payload = jwt.decode(token.token, { json: true });
       const data: IPayload = JSON.parse(JSON.stringify(payload));
 
       expect(data.email).toBe(dto.email);

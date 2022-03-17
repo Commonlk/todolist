@@ -4,8 +4,10 @@ import { User, UserFormValues } from "../models/user";
 
 axios.defaults.baseURL = "http://localhost:5000";
 
+const token = localStorage.getItem("token");
+
 axios.interceptors.request.use(config => {
-  config.headers!.Authorization = `Bearer ${"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJ2aXRpbnNpbHZhMHhkQGdtYWlsLmNvbSIsIm5hbWUiOiJWaWN0b3IiLCJpYXQiOjE2NDc1MTkzNzMsImV4cCI6MTY0NzUyNDc3M30.Xcaibz1ZV8M4xXl0C6z9s8g0poRDujFNaDVfbBZzJMI"}`;
+  config.headers!.Authorization = `Bearer ${token}`;
   return config;
 });
 

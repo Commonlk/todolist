@@ -52,7 +52,7 @@ export class AuthService {
     userId: string,
     email: string,
     name: string,
-  ): Promise<{ access_token: string }> {
+  ): Promise<{ name: string; token: string }> {
     const payload = {
       id: userId,
       email,
@@ -67,7 +67,8 @@ export class AuthService {
     });
 
     return {
-      access_token: token,
+      name,
+      token,
     };
   }
 }
