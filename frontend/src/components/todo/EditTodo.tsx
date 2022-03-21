@@ -10,14 +10,10 @@ import { Box } from "@mui/system";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import agent from "../../api/agent";
-import { Todo } from "../../models/todo";
+import { useTodoContext } from "../../contexts/TodoContext";
 
-interface Props {
-  todos: Todo[];
-  updateTodo: (id: string, updatedTodo: Todo) => void;
-}
-
-const EditTodo = ({ todos, updateTodo }: Props) => {
+const EditTodo = () => {
+  const { todos, updateTodo } = useTodoContext();
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -27,7 +23,7 @@ const EditTodo = ({ todos, updateTodo }: Props) => {
 
   useEffect(() => {
     if (id) {
-      const todo = todos.find(todo => todo.id == id);
+      const todo = todos.find(todo => todo.id === id);
 
       if (todo) {
         setTitle(todo.title);
@@ -37,7 +33,7 @@ const EditTodo = ({ todos, updateTodo }: Props) => {
         navigate("/todos");
       }
     }
-  }, []);
+  }, [id, navigate, todos]);
 
   const handleInput = (
     e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>

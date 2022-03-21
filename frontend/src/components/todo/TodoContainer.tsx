@@ -1,14 +1,25 @@
 import { Container, Grid, Typography } from "@mui/material";
-import { Todo } from "../../models/todo";
+import { useEffect } from "react";
+import agent from "../../api/agent";
+import { useTodoContext } from "../../contexts/TodoContext";
 import TodoCard from "./TodoCard";
 
-interface Props {
-  todos: Todo[];
-  deleteTodo: (id: string) => void;
-  updateTodo: (id: string, todo: Todo) => void;
-}
+const TodoContainer = () => {
+  const { todos, setTodos } = useTodoContext();
 
-const TodoContainer = ({ todos, deleteTodo, updateTodo }: Props) => {
+  useEffect(() => {
+    try {
+      const getTodos = async () => {
+        const todos = await agent.Todos.todoList();
+        if (todos) setTodos(todos);
+      };
+
+      getTodos();
+    } catch (error) {
+      console.log(error);
+    }
+  }, [setTodos]);
+
   return (
     <Container maxWidth="sm" sx={{ marginTop: 4 }}>
       <Typography variant="h3" fontSize={16}>
@@ -24,8 +35,6 @@ const TodoContainer = ({ todos, deleteTodo, updateTodo }: Props) => {
               important={todo.important}
               createdAt={todo.createdAt}
               completed={todo.completed}
-              deleteTodo={deleteTodo}
-              updateTodo={updateTodo}
             />
           </Grid>
         ))}

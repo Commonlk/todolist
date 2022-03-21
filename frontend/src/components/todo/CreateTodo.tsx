@@ -10,13 +10,10 @@ import { Box } from "@mui/system";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import agent from "../../api/agent";
-import { Todo } from "../../models/todo";
+import { useTodoContext } from "../../contexts/TodoContext";
 
-interface Props {
-  handleTodo: (todo: Todo) => void;
-}
-
-const CreateTodo = ({ handleTodo }: Props) => {
+const CreateTodo = () => {
+  const { createTodo } = useTodoContext();
   const navigate = useNavigate();
 
   const [title, setTitle] = useState("");
@@ -31,7 +28,8 @@ const CreateTodo = ({ handleTodo }: Props) => {
         description,
         important,
       });
-      handleTodo(newTodo);
+      createTodo(newTodo);
+
       navigate("/todos");
     } catch (error) {
       console.log(error);

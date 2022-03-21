@@ -17,8 +17,8 @@ import {
 } from "@mui/material";
 import { Link } from "react-router-dom";
 import agent from "../../api/agent";
-import { Todo } from "../../models/todo";
 import { Box } from "@mui/system";
+import { useTodoContext } from "../../contexts/TodoContext";
 
 interface Props {
   id: string;
@@ -27,8 +27,6 @@ interface Props {
   description: string;
   important?: boolean;
   completed: boolean;
-  deleteTodo: (id: string) => void;
-  updateTodo: (id: string, todo: Todo) => void;
 }
 
 const TodoCard = ({
@@ -38,9 +36,9 @@ const TodoCard = ({
   title,
   id,
   completed,
-  deleteTodo,
-  updateTodo,
 }: Props) => {
+  const { updateTodo, deleteTodo } = useTodoContext();
+
   const [expanded, setExpanded] = useState(false);
   const [isCompleted, setIsCompleted] = useState(completed);
 
