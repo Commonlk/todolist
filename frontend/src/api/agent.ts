@@ -4,9 +4,8 @@ import { User, UserFormValues } from "../models/user";
 
 axios.defaults.baseURL = "http://localhost:5000";
 
-const token = localStorage.getItem("token");
-
 axios.interceptors.request.use(config => {
+  const token = window.localStorage.getItem("token");
   config.headers!.Authorization = `Bearer ${token}`;
   return config;
 });
