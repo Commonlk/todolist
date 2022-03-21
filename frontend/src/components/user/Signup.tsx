@@ -1,43 +1,33 @@
-import {
-  Button,
-  Container,
-  FormControl,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Button, Container, TextField, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import agent from "../../api/agent";
+import { useAuthContext } from "../../contexts/AuthContext";
 
 const Signup = () => {
+  const { setAuthenticated, setToken } = useAuthContext();
   const navigate = useNavigate();
 
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [inputs, setInputs] = useState({ name: "", email: "", password: "" });
 
   const handleInput = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    const inputId = e.target.id;
-    const value = e.target.value;
-
-    if (inputId === "name") setName(value);
-    if (inputId === "email") setEmail(value);
-    if (inputId === "password") setPassword(value);
+    setInputs({ ...inputs, [e.target.name]: e.target.value });
   };
 
   const handleForm = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (name && email && password) {
-      try {
-        const user = await agent.Account.signup({ name, email, password });
-        localStorage.setItem("token", user.token);
-        navigate("/todos");
-      } catch (error) {}
-    }
+    try {
+      const user = await agent.Account.signup(inputs);
+
+      setToken(user.token);
+      setAuthenticated(true);
+
+      navigate("/todos");
+    } catch (error) {}
   };
 
   return (
@@ -62,30 +52,30 @@ const Signup = () => {
       >
         <TextField
           required
-          id="name"
           label="Your name"
           size="small"
+          name="name"
           onChange={handleInput}
-          value={name}
+          value={inputs.name}
         />
 
         <TextField
           required
-          id="email"
           label="Email"
           size="small"
+          name="email"
           onChange={handleInput}
-          value={email}
+          value={inputs.email}
         />
 
         <TextField
           required
-          id="password"
           label="Password"
           type="password"
           size="small"
+          name="password"
           onChange={handleInput}
-          value={password}
+          value={inputs.password}
         />
 
         <Box

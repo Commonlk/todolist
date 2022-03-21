@@ -1,7 +1,6 @@
 import {
   Button,
   Container,
-  FormControl,
   FormHelperText,
   TextField,
   Typography,
@@ -11,40 +10,33 @@ import React from "react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import agent from "../../api/agent";
+import { useAuthContext } from "../../contexts/AuthContext";
 
 const Signin = () => {
+  const { setToken, setAuthenticated } = useAuthContext();
   const navigate = useNavigate();
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [inputs, setInputs] = useState({ email: "", password: "" });
 
   const [error, setError] = useState(false);
 
   const handleInput = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    const inputId = e.target.id;
-    const value = e.target.value;
-
-    if (inputId === "email") {
-      setEmail(value);
-    }
-    if (inputId === "password") {
-      setPassword(value);
-    }
+    setInputs({ ...inputs, [e.target.name]: e.target.value });
   };
 
   const handleForm = async (e: React.FormEvent) => {
     e.preventDefault();
+    try {
+      const user = await agent.Account.signin(inputs);
 
-    if (email && password) {
-      try {
-        const user = await agent.Account.signin({ email, password });
-        localStorage.setItem("token", user.token);
-        navigate("/todos");
-      } catch (error) {
-        setError(true);
-      }
+      setToken(user.token);
+      setAuthenticated(true);
+
+      navigate("/todos");
+    } catch (error) {
+      setError(true);
     }
   };
 
@@ -68,24 +60,26 @@ const Signin = () => {
         autoComplete="off"
         onSubmit={handleForm}
       >
-        <FormControl sx={{ width: "100%", alignItems: "center" }}>
-          <TextField
-            required
-            id="email"
-            label="Email"
-            onChange={handleInput}
-            size="small"
-          />
-          <TextField
-            required
-            id="password"
-            label="Password"
-            type="password"
-            onChange={handleInput}
-            size="small"
-          />
-          {error && <FormHelperText error>Invalid credentials</FormHelperText>}
-        </FormControl>
+        <TextField
+          required
+          id="email"
+          label="Email"
+          size="small"
+          name="email"
+          onChange={handleInput}
+          value={inputs.email}
+        />
+        <TextField
+          required
+          id="password"
+          label="Password"
+          type="password"
+          size="small"
+          name="password"
+          onChange={handleInput}
+          value={inputs.password}
+        />
+        {error && <FormHelperText error>Invalid credentials</FormHelperText>}
         <Box
           sx={{
             marginTop: 1,
